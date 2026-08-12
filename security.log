@@ -1,0 +1,6 @@
+INFO User abdul logged in
+ERROR Failed login for user admin
+INFO User john logged in
+WARNING Multiple failed login attempts
+ERROR Failed login for user admin
+INFO User sara logged in
