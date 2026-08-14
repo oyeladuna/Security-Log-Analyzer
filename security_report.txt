@@ -1,0 +1,52 @@
+Security Log Analysis
+-------------------------
+Successful logins: 3
+Failed logins: 17
+Warnings: 1
+Errors: 0
+Malformed: 1
+-------------------------
+Suspicious users:
+admin: 13 failed attempts
+abdul: 3 failed attempts
+-------------------------
+Suspicious IPs:
+192.168.1.30: 3 failed attempts
+-------------------------
+Potential brute-force activity:
+192.168.1.20: 7 failed attempts
+Security Log Analysis
+-------------------------
+Successful logins: 3
+Failed logins: 17
+Warnings: 1
+Errors: 0
+Malformed: 1
+-------------------------
+Suspicious users:
+admin: 13 failed attempts
+abdul: 3 failed attempts
+-------------------------
+Suspicious IPs:
+192.168.1.30: 3 failed attempts
+-------------------------
+Potential brute-force activity:
+192.168.1.20: 7 failed attempts
+Security Log Analysis
+-------------------------
+Successful logins: 3
+Failed logins: 17
+Warnings: 1
+Errors: 0
+Malformed: 1
+-------------------------
+Suspicious users:
+admin: 13 failed attempts
+abdul: 3 failed attempts
+-------------------------
+Suspicious IPs:
+192.168.1.30: 3 failed attempts
+-------------------------
+Potential brute-force activity:
+192.168.1.20: 7 failed attempts
+

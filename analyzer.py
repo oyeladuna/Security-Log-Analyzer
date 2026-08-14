@@ -62,41 +62,52 @@ def analyze_log(filename: str):
             }
         
     return results
-
-def display_summary(results: dict):
-    print("Security Log Analysis")
-    print("-" * 25)
-
-    print(f"Successful logins: {results['successful_logins']}")
-    print(f"Failed logins: {results['failed_logins']}")
-    print(f"Warnings: {results['warnings']}")
-    print(f"Errors: {results['errors']}")
-    print(f"Malformed: {results['malformed']}")
+def build_report(results: dict):
+    report = ""
     
-    print("-" * 25)
-    print("Suspicious users: ")
+    report += "Security Log Analysis\n"
+    report += "-" * 25 + "\n"
+    report += f"Successful logins: {results['successful_logins']}\n"
+    report += f"Failed logins: {results['failed_logins']}\n"
+    report += f"Warnings: {results['warnings']}\n"
+    report += f"Errors: {results['errors']}\n"
+    report += f"Malformed: {results['malformed']}\n"
+
+    report += "-" * 25 + "\n"
+    report += "Suspicious users:\n"
     for key, value in results["usernames"].items():
         if value >= 3:
-            print(f"{key}: {value} failed attempts")
-    
-    print("-" * 25)
-    print("Suspicious IPs:")
+            report += f"{key}: {value} failed attempts\n"
+            
+    report += "-" * 25 + "\n"
+    report += "Suspicious IPs:\n"
     for userIP, attempt in results["ipAddresses"].items(): 
         if attempt >= 3 and attempt < 5:
-            print(f"{userIP}: {attempt} failed attempts") 
-            
-    print("-" * 25)
-    print("Potential brute-force activity:")
+            report += f"{userIP}: {attempt} failed attempts\n" 
+    
+    report += "-" * 25 + "\n"
+    report += "Potential brute-force activity:\n"
     for userIP, attempt in results["ipAddresses"].items(): 
-            if attempt >= 5:
-                print(f"{userIP}: {attempt} failed attempts")
+        if attempt >= 5:
+            report += f"{userIP}: {attempt} failed attempts\n"
+
+    return report
+def save_report(report: str):
+    with open("security_report.txt", "a") as log_file:
+        log_file.write(report+"\n")
+
+def display_summary(report: str):
+    print(report)
         
 def main():
     filename = get_filename()
     results = analyze_log(filename)
     
     if results != None:
-        display_summary(results)
+        report = build_report(results)
+        display_summary(report)
+        save_report(report)
+        
 
 if __name__ == "__main__":
     main()
