@@ -9,7 +9,7 @@ def analyze_log(filename: str):
     failed_logins = 0
     warnings = 0
     errors = 0
-
+    USERNAMES = {}
     try:
         with open(filename) as file:
 
@@ -20,6 +20,13 @@ def analyze_log(filename: str):
 
                 elif "Failed login" in line:
                     failed_logins += 1
+                    
+                    parts = line.split()
+                    user = parts[parts.index("user") + 1]
+                    if user not in USERNAMES:
+                        USERNAMES[user] = 1
+                    else:
+                        USERNAMES[user] += 1             
 
                 elif "WARNING" in line:
                     warnings += 1
@@ -28,12 +35,13 @@ def analyze_log(filename: str):
                     errors += 1
     except Exception as e:
         print(e)
-        
+            
     results = {
             "successful_logins": successful_logins,
             "failed_logins": failed_logins,
             "warnings": warnings,
-            "errors": errors
+            "errors": errors,
+            "usernames": USERNAMES
             }
         
     return results
@@ -46,6 +54,11 @@ def display_summary(results: dict):
     print(f"Failed logins: {results['failed_logins']}")
     print(f"Warnings: {results['warnings']}")
     print(f"Errors: {results['errors']}")
+       
+    print("Suspicious users: ")
+    for key, value in results["usernames"].items():
+        if value >= 3:
+            print(F"{key}: {value} failed attempts")
     
 def main():
     filename = get_filename()
