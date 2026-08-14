@@ -4,6 +4,15 @@ INFO User john logged in
 WARNING Multiple failed login attempts
 ERROR Failed login for user admin
 INFO User sara logged in
+ERROR Failed login attempt from 192.168.1.20 user admin
+ERROR Failed login attempt from 192.168.1.20 user admin
+ERROR Failed login attempt from 192.168.1.20 user admin
+ERROR Failed login attempt from 192.168.1.20 user admin
+ERROR Failed login attempt from 192.168.1.20 user admin
+ERROR Failed login attempt from 192.168.1.30 user admin
+ERROR Failed login attempt from 192.168.1.30 user admin
+ERROR Failed login attempt from 192.168.1.20 user admin
+ERROR Failed login attempt from 192.168.1.30 user admin
 ERROR Failed login for user admin
 ERROR Failed login for user admin
 ERROR Failed login for user abdul

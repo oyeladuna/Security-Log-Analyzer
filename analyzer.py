@@ -10,6 +10,7 @@ def analyze_log(filename: str):
     warnings = 0
     errors = 0
     USERNAMES = {}
+    IP_ADDRESSES = {}
     try:
         with open(filename) as file:
 
@@ -26,7 +27,15 @@ def analyze_log(filename: str):
                     if user not in USERNAMES:
                         USERNAMES[user] = 1
                     else:
-                        USERNAMES[user] += 1             
+                        USERNAMES[user] += 1    
+                    
+                    if "from" in parts:
+                        userIp = parts[parts.index("from") + 1]
+            
+                        if userIp not in IP_ADDRESSES:
+                            IP_ADDRESSES[userIp] = 1
+                        else:
+                            IP_ADDRESSES[userIp] += 1    
 
                 elif "WARNING" in line:
                     warnings += 1
@@ -41,7 +50,8 @@ def analyze_log(filename: str):
             "failed_logins": failed_logins,
             "warnings": warnings,
             "errors": errors,
-            "usernames": USERNAMES
+            "usernames": USERNAMES,
+            "ipAddresses": IP_ADDRESSES
             }
         
     return results
@@ -54,12 +64,25 @@ def display_summary(results: dict):
     print(f"Failed logins: {results['failed_logins']}")
     print(f"Warnings: {results['warnings']}")
     print(f"Errors: {results['errors']}")
-       
+    
+    print("-" * 25)
     print("Suspicious users: ")
     for key, value in results["usernames"].items():
         if value >= 3:
-            print(F"{key}: {value} failed attempts")
+            print(f"{key}: {value} failed attempts")
     
+    print("-" * 25)
+    print("Suspicious IPs:")
+    for userIP, attempt in results["ipAddresses"].items(): 
+        if attempt >= 3 and attempt < 5:
+            print(f"{userIP}: {attempt} failed attempts") 
+            
+    print("-" * 25)
+    print("Potential brute-force activity:")
+    for userIP, attempt in results["ipAddresses"].items(): 
+            if attempt >= 5:
+                print(f"{userIP}: {attempt} failed attempts")
+        
 def main():
     filename = get_filename()
     results = analyze_log(filename)
