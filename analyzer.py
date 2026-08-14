@@ -9,6 +9,7 @@ def analyze_log(filename: str):
     failed_logins = 0
     warnings = 0
     errors = 0
+    malformed = 0
     USERNAMES = {}
     IP_ADDRESSES = {}
     try:
@@ -23,11 +24,15 @@ def analyze_log(filename: str):
                     failed_logins += 1
                     
                     parts = line.split()
-                    user = parts[parts.index("user") + 1]
-                    if user not in USERNAMES:
-                        USERNAMES[user] = 1
-                    else:
-                        USERNAMES[user] += 1    
+                    try:
+                        user = parts[parts.index("user") + 1]
+                        if user not in USERNAMES:
+                            USERNAMES[user] = 1
+                        else:
+                            USERNAMES[user] += 1 
+                    except ValueError:
+                        malformed += 1
+                        pass   
                     
                     if "from" in parts:
                         userIp = parts[parts.index("from") + 1]
@@ -42,14 +47,16 @@ def analyze_log(filename: str):
 
                 elif "ERROR" in line:
                     errors += 1
-    except Exception as e:
-        print(e)
+    except FileNotFoundError:
+        print(f"{filename} doesn't exist")
+        return None
             
     results = {
             "successful_logins": successful_logins,
             "failed_logins": failed_logins,
             "warnings": warnings,
             "errors": errors,
+            "malformed": malformed,
             "usernames": USERNAMES,
             "ipAddresses": IP_ADDRESSES
             }
@@ -64,6 +71,7 @@ def display_summary(results: dict):
     print(f"Failed logins: {results['failed_logins']}")
     print(f"Warnings: {results['warnings']}")
     print(f"Errors: {results['errors']}")
+    print(f"Malformed: {results['malformed']}")
     
     print("-" * 25)
     print("Suspicious users: ")
@@ -86,7 +94,9 @@ def display_summary(results: dict):
 def main():
     filename = get_filename()
     results = analyze_log(filename)
-    display_summary(results)
+    
+    if results != None:
+        display_summary(results)
 
 if __name__ == "__main__":
     main()
